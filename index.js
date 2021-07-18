@@ -38,3 +38,7 @@ const infoMatrix = expandirInformacionPelicula(
 );
 console.log('Informacion de Matrix', infoMatrix);
 
+const ainfoMatrix = expandirInformacionPelicula(
+    'aMatrix'
+);
+console.log('Informacion de aMatrix', ainfoMatrix);

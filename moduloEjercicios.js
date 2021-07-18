@@ -156,12 +156,9 @@ export const obtenerPeliculasConPuntuacionExcelente = () => {
             let criticasCompletas = []
             const criticos = basededatos.criticos
             criticas.forEach((c) => {
-                const indexCritico = criticos.findIndex((critico)=> critico.id == c.critico )
-                console.log('INDEX', indexCritico)
-                    console.log('HOLA')
-                const critico = criticos[indexCritico]
+                const critico = criticos.filter( critico => critico.id == c.critico)[0]
                 const criticaCompleta = {
-                    critico, 
+                    critico: critico, 
                     puntuacion: c.puntuacion,
                 };
                 criticasCompletas.push(criticaCompleta)
@@ -169,11 +166,10 @@ export const obtenerPeliculasConPuntuacionExcelente = () => {
             return criticasCompletas
         }
 export const expandirInformacionPelicula = (nombrePelicula) => {
-    const index = peliculas.findIndex((peli)=> peli.nombre === nombrePelicula)
-    if(index == -1){
+    const pelicula=peliculas.filter((peli)=> peli.nombre === nombrePelicula)[0]
+    if(!pelicula){
         return
     }
-    const pelicula=peliculas[index]
     const directoresCompletos = getDirectores(pelicula)
     const generosCompletos = getGeneros(pelicula)
     const criticasCompletas = getCriticas(pelicula)
