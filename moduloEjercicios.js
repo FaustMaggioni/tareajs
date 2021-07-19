@@ -4,19 +4,25 @@ import basededatos from './basededatos.js';
 /**
 * Devuelve el promedio de anios de estreno de todas las peliculas de la base de datos.
 */
-const peliculas = basededatos.peliculas //pregunntar
+ //pregunntar
 const calificaciones = basededatos.calificaciones
 const directores = basededatos.directores
+const peliculas = basededatos.peliculas
 export const promedioAnioEstreno = () => {
     // Ejemplo de como accedo a datos dentro de la base de datos
     // console.log(basededatos.peliculas);
+    const total = totalAñosPeliculas()
+    const prom = total/(peliculas.length)
+    return prom;
+};
+
+const totalAñosPeliculas = () =>{
     let total = 0
     peliculas.forEach((peli) => {
         total = total + peli.anio
     })
-    const prom = total/(peliculas.length)
-    return prom;
-};
+    return total
+}
 
 
 /**
@@ -25,25 +31,32 @@ export const promedioAnioEstreno = () => {
 * @param {number} promedio
   */
 export const pelicuasConCriticaPromedioMayorA = (promedio) => {
+    const idPeliculas = pelicuasConCriticaPromedioMayorA(promedio)
+    return peliculas.filter((peli) => idPeliculas.includes(peli.id))
+};
+
+const peliculasConCalificacionMayorA = (promedio) => {
     let idPeliculas = []
     calificaciones.forEach((calif) => {
         if(calif.puntuacion>promedio)
         idPeliculas.push(calif.pelicula)
     })
-    return peliculas.filter((peli) => idPeliculas.includes(peli.id))
-};
-
+    return idPeliculas
+}
 /**
 * Devuelve la lista de peliculas de un director
 * @param {string} nombreDirector
 */
 export const peliculasDeUnDirector = (nombreDirector) => {
-    const director = directores.filter((direc) => direc.nombre === nombreDirector)[0]
-    const id = director.id
+    const id = idDirectorByNombre(nombreDirector)
     return peliculas.filter((peli) => (
         peli.directores.includes(id)
     ))
 };
+
+const idDirectorByNombre = (nombreDirector) => {
+    return directores.filter((direc) => direc.nombre === nombreDirector)[0].id
+}
 
 /**
 * Devuelve el promdedio de critica segun el id de la pelicula.
@@ -51,13 +64,16 @@ export const peliculasDeUnDirector = (nombreDirector) => {
 */
 export const promedioDeCriticaBypeliculaId = (peliculaId) => {
     let total = 0
-    const calificacionesPelicula = calificaciones.filter((calif)=> calif.pelicula === peliculaId)
+    const calificacionesPelicula = getCalificacionesPeliculaById(peliculaId)
     calificacionesPelicula.forEach((calif)=> {
         total = total + calif.puntuacion
     })
     return total/calificacionesPelicula.length
 };
 
+const getCalificacionesPeliculaById = (peliculaId) => {
+    return calificaciones.filter((calif)=> calif.pelicula === peliculaId)
+}
 /**
  * Obtiene la lista de peliculas con alguna critica con
  * puntuacion excelente (critica >= 9).
